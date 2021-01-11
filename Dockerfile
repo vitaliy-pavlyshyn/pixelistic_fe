@@ -17,6 +17,8 @@ EXPOSE 80
 RUN pwd
 CMD serve -s build -l 80
 
+
+
 # FROM nginx:alpine
 # # Nginx config
 # RUN rm -rf /etc/nginx/conf.d
@@ -25,11 +27,8 @@ CMD serve -s build -l 80
 # EXPOSE 80
 # # Copy .env file and shell script to container
 # WORKDIR /usr/share/nginx/html
-# COPY ./env.sh .
 # COPY .env .
 # # Add bash
 # RUN apk add --no-cache bash
-# # Make our shell script executable
-# RUN chmod +x env.sh
 # # Start Nginx server
-# CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+# CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""]

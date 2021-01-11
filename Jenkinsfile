@@ -22,6 +22,11 @@ pipeline {
                sh 'npm test'                       
             }
         }
+        stage('Build') {
+            steps {
+               sh 'docker build -t pixelistic_fe:$BUILD_ID .'
+            }
+        }
         stage('SonarScanner') {
             environment {
                 SONAR = credentials('sonarqube-pixelistic')
@@ -34,16 +39,16 @@ pipeline {
         }
         stage('Nexus Deploy') {
             steps {
-                sh 'docker push'
+                sh 'docker push pixelistic_fe:$BUILD_ID'
             }
         }
-        // stage('Production') {
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'pixel-prod', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        //             sh 'sshpass -p "$PASSWORD" scp -oStrictHostKeyChecking=no ./production.yml $USERNAME@10.26.3.158:/'
-        //         }
-        //     }
-        // }
+        stage('Production') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'pixel-prod', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'sshpass -p "$PASSWORD" scp -oStrictHostKeyChecking=no ./production.yml $USERNAME@10.26.3.158:/'
+                }
+            }
+        }
     }
     post {
       failure {
