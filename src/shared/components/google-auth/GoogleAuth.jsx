@@ -3,13 +3,17 @@ import GoogleLogin from 'react-google-login';
 import PropTypes from 'prop-types';
 
 import PassportBtn from '../passport-btn/PassportBtn';
-import { googleId } from '../../../const/social-auth-config';
+
+const googleLoginError = (error) => {
+  console.log("google login error", error);
+};
 
 export class GoogleAuth extends Component {
   render() {
     return <GoogleLogin
-      clientId={googleId}
+      clientId={process.env.REACT_APP_GOOGLE_ID}
       onSuccess={this.responseGoogle}
+      onFailure={googleLoginError}
       render={props => <PassportBtn onClick={props.onClick} name="google" />}
     />
   }

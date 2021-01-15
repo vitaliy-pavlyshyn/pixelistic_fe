@@ -6,7 +6,6 @@ import { postClearPosts, postSessionPosts } from './../../actions/post';
 import { Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 import io from "socket.io-client";
-import { port, host } from "../../const/node-server-config";
 import Header from '../../shared/components/header/Header';
 import AdminPageHeader from '../admin-page/components/admin-page-header/AdminPageHeader';
 import LoadingSpinner from '../../shared/components/loading-spinner/LoadingSpinner';
@@ -80,7 +79,7 @@ export class MainLayout extends Component {
     return <LoadingSpinner/>
   }
 
-  socket = io.connect(`${host}:${port}`);
+  socket = io.connect(`${process.env.REACT_APP_API_SOCKET}:${process.env.REACT_APP_API_WEB_PORT }`);
 
   signOut =  async () => {
     this.setState({ accessToken: false });

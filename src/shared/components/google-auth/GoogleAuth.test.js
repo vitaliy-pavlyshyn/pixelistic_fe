@@ -16,7 +16,7 @@ describe('GoogleAuth component', () => {
 
   it('renders correctly', () => {
     expect(wrapper).toMatchSnapshot();
-    expect(wrapper.find({ clientId: googleId })).toHaveLength(1);
+    expect(wrapper.find({ clientId: process.env.REACT_APP_GOOGLE_ID })).toHaveLength(1);
   });
 
   describe('when the component gets a respose from Google', () => {
