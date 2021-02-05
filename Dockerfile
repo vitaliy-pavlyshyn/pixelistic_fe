@@ -1,34 +1,18 @@
-FROM ubuntu:20.04 as build_image
-RUN apt update -y && apt install nodejs -y && apt install npm -y
+# # build environment
+FROM node:15.4-alpine as build_image
 WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
 COPY package*.json ./
-RUN npm install 
-COPY . .
+RUN apk add --no-cache --virtual .gyp python make g++ \
+    && npm install \
+    && apk del .gyp
+COPY . ./
 RUN npm run build
 
 
-FROM ubuntu:20.04
-ENV TZ=Europe/Kiev
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt update -y && apt install npm -y && npm i npm install -g serve
-WORKDIR /app
-COPY --from=build_image /app/build /app/build
+# # production environment
+FROM nginx:stable-alpine
+COPY --from=build_image /app/build /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-RUN pwd
-CMD serve -s build -l 80
-
-
-
-# FROM nginx:alpine
-# # Nginx config
-# RUN rm -rf /etc/nginx/conf.d
-# COPY conf /etc/nginx
-# COPY --from=build_image /app/build /usr/share/nginx/html/
-# EXPOSE 80
-# # Copy .env file and shell script to container
-# WORKDIR /usr/share/nginx/html
-# COPY .env .
-# # Add bash
-# RUN apk add --no-cache bash
-# # Start Nginx server
-# CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""]
+CMD ["nginx", "-g", "daemon off;"]

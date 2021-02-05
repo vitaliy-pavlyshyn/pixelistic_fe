@@ -1,56 +1,39 @@
 pipeline {
-    tools {
-        nodejs 'node-default'
-    }  
-    agent {label 'slave-machine'}
-    
+    agent any
+    environment {
+        env_vars_fe = credentials("env_vars_fe")
+        aws_ecr_pass = credentials("aws_ecr_pass")
+    }
     stages {
         stage('Clone repository') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-                doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
-                userRemoteConfigs: [[url: 'http://10.26.0.196/v_pavlyshyn/pixelistic_fe.git']]])
+                git 'https://github.com/vitaliy-pavlyshyn/pixelistic_fe.git'
             }
         }
-        stage('Startup') {
+        stage('Download .env file') {
             steps {
-               sh 'npm install' 
-            }
-        }
-        stage('Test') {
-            steps {
-               sh 'npm test'                       
-            }
-        }
-        stage('SonarScanner') {
-            environment {
-                SONAR = credentials('sonarqube-pixelistic')
-            }
-            steps {
-                withSonarQubeEnv(installationName: 'Sonar') {
-                    sh 'docker run --rm -e SONAR_HOST_URL="http://10.26.0.126:9000/sonarqube" -e SONAR_LOGIN=$SONAR -v ${pwd}:/usr/src sonarsource/sonar-scanner-cli'
+                withCredentials([file(credentialsId: 'env_vars_fe', variable: 'envfile')]) {
+                    sh "cp $envfile .env"
                 }
             }
         }
-        stage('Nexus Deploy') {
+        stage('Build a container') {
             steps {
-                sh 'docker push'
+                withCredentials([string(credentialsId: 'aws_ecr_pass', variable: 'PW')]) {
+                    sh "sudo docker login --username AWS --password $PW public.ecr.aws/t0q9r0m9 \
+                    && sudo docker build -t pixelistic_fe ."
+                }
             }
         }
-        // stage('Production') {
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'pixel-prod', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        //             sh 'sshpass -p "$PASSWORD" scp -oStrictHostKeyChecking=no ./production.yml $USERNAME@10.26.3.158:/'
-        //         }
-        //     }
-        // }
+        stage('Push to registry') {
+            steps {
+                sh "sudo docker tag pixelistic_fe:latest public.ecr.aws/t0q9r0m9/pixelistic_fe:latest && sudo docker push public.ecr.aws/t0q9r0m9/pixelistic_fe:latest"
+            }
+        }
     }
-    post {
-      failure {
-        updateGitlabCommitStatus name: 'build', state: 'failed'
-      }
-      success {
-        updateGitlabCommitStatus name: 'build', state: 'success'
-      }
+    post { 
+        always { 
+            cleanWs()
+        }
     }
 }
