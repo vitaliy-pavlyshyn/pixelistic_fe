@@ -1,6 +1,6 @@
 import mockStore from '../../__mocks__/redux-mock-store';
 import mockAxios from '../../__mocks__/axios';
-import { host, port } from '../../const/node-server-config';
+import { host } from '../../const/node-server-config';
 import * as actions from './index';
 const store = mockStore();
 
@@ -33,7 +33,7 @@ describe('getPosts actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-    `${host}:${port}/add-post`, { 
+    `${host}/add-post`, { 
       data: { post }, 
       headers: "jest test", 
       method: "POST"
@@ -55,7 +55,7 @@ describe('getPosts actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-    `${host}:${port}/remove-post`, { 
+    `${host}/remove-post`, { 
       data: { 
         postId: 1, 
         userId: 1, 
@@ -90,7 +90,7 @@ describe('getPosts actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-    `${host}:${port}/${type}-post`, { 
+    `${host}/${type}-post`, { 
       data: { 
         postId: 1 , 
         userId: 1
@@ -125,7 +125,7 @@ describe('getPosts actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-    `${host}:${port}/comment-post`,  { 
+    `${host}/comment-post`,  { 
       data: { 
         postId: 1, 
         userNickname: 'Max', 

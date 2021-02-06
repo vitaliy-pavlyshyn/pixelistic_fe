@@ -1,10 +1,10 @@
 import httpServise from './http-service';
-import { host , port } from '../const/node-server-config';
+import { host } from '../const/node-server-config';
 
 export const authApi = {
     signIn: (email, password) => {
         return new Promise((resolve, reject) => {
-            httpServise.post(`${host}:${port}/login`, {email: email, password: password}).then(
+            httpServise.post(`${host}/login`, {email: email, password: password}).then(
                 res => {
                     if (res.data.user) {
                         window.localStorage.setItem('authHeaders', JSON.stringify({ 'accessToken': res.data.accessToken}));
@@ -17,7 +17,7 @@ export const authApi = {
 
     signInSocial: (user) => {
         return new Promise((resolve, reject) => {
-            httpServise.post(`${host}:${port}/login/social`, {user}).then(
+            httpServise.post(`${host}/login/social`, {user}).then(
                 res => {
                     if (res.data.user) {
                         window.localStorage.setItem('authHeaders', JSON.stringify({ 'accessToken': res.data.accessToken}));
@@ -30,7 +30,7 @@ export const authApi = {
 
     checkUser: () => {
         return new Promise((resolve, reject) => {
-            httpServise.get(`${host}:${port}/validate-token`).then(
+            httpServise.get(`${host}/validate-token`).then(
                 res => {
                     if (res.data.user) {
                         resolve(res.data.user);
@@ -48,7 +48,7 @@ export const authApi = {
 
     signOut: () => {
         return new Promise ((resolve, reject) => {
-            httpServise.get(`${host}:${port}/logout`, null).then(
+            httpServise.get(`${host}/logout`, null).then(
                 res => {
                     window.localStorage.removeItem('authHeaders');
                     resolve(res);
@@ -64,7 +64,7 @@ export const authApi = {
     signUp: (nickname, email, password, passwordConf) => {
         const newUser = { nickname, email, password, passwordConf };
         return new Promise ((resolve, reject) => {
-            httpServise.post(`${host}:${port}/register`, newUser).then(
+            httpServise.post(`${host}/register`, newUser).then(
                 res => {
                     if (res.data.text) {
                         resolve(res.data.text);
@@ -76,7 +76,7 @@ export const authApi = {
 
     verifyEmail: (hash) => {
         return new Promise ((resolve, reject) => {
-            httpServise.get(`${host}:${port}/verify/${hash}`).then(
+            httpServise.get(`${host}/verify/${hash}`).then(
                 res => {
                     if (res.data.user) {
                         resolve(res.data.user);
@@ -88,7 +88,7 @@ export const authApi = {
 
     forgotEmail: (email) => {
         return new Promise ((resolve, reject) => {
-            httpServise.post(`${host}:${port}/forgot`, {email: email}).then(
+            httpServise.post(`${host}/forgot`, {email: email}).then(
                 res => {
                     if (res.data.text) {
                         resolve(res.data.text);
@@ -100,7 +100,7 @@ export const authApi = {
 
     VerifyPasswordResetToken: (reset) => {
         return new Promise ((resolve, reject) => {
-            httpServise.get(`${host}:${port}/change/${reset}`).then(
+            httpServise.get(`${host}/change/${reset}`).then(
                 res => {
                     if (res.data.text) {
                         resolve(res.data.text);
@@ -112,7 +112,7 @@ export const authApi = {
 
     ChangePassword: (password, passwordConf, resetToken) =>{
         return new Promise ((resolve, reject) => {
-            httpServise.post(`${host}:${port}/change`, {password: password, passwordConf: passwordConf, resetToken: resetToken}).then(
+            httpServise.post(`${host}/change`, {password: password, passwordConf: passwordConf, resetToken: resetToken}).then(
                 res => {
                     if (res.data.text) {
                         resolve(res.data.text);

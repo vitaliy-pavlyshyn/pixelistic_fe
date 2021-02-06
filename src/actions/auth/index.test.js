@@ -1,6 +1,6 @@
 import mockStore from '../../__mocks__/redux-mock-store';
 import mockAxios from '../../__mocks__/axios';
-import { host, port } from '../../const/node-server-config';
+import { host } from '../../const/node-server-config';
 import * as actions from './index';
 const store = mockStore();
 
@@ -28,7 +28,7 @@ describe('forgot password async actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
         expect(mockAxios).toHaveBeenCalledTimes(1);
         expect(mockAxios).toHaveBeenCalledWith(
-          `${host}:${port}/forgot`,
+          `${host}/forgot`,
             {
               data: {
                 email:'email@server.com'

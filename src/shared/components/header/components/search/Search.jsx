@@ -4,7 +4,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Link } from 'react-router-dom';
 
 import httpServise from "../../../../../api/http-service";
-import { host, port } from "../../../../../const/node-server-config";
+import { host } from "../../../../../const/node-server-config";
 import { updateAvatarUrlPath } from './../../../../utils/avatarUtil';
 
 export class Search extends Component {
@@ -57,7 +57,7 @@ export class Search extends Component {
   }
 
   getUsers = () => {
-    httpServise.post(`${host}:${port}/search`).then(res => {
+    httpServise.post(`${host}/search`).then(res => {
       this.setState({ users: res.data.users });
     });
   }

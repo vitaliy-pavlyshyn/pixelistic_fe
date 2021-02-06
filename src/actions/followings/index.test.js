@@ -1,6 +1,6 @@
 import mockStore from '../../__mocks__/redux-mock-store';
 import mockAxios from '../../__mocks__/axios';
-import { host, port } from '../../const/node-server-config';
+import { host } from '../../const/node-server-config';
 import * as actions from './index';
 const store = mockStore();
 
@@ -28,7 +28,7 @@ describe('followings async actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${host}:${port}/followings/follow`,
+      `${host}/followings/follow`,
       {"data": undefined, "headers": "jest test", "method": "PATCH"}
     );
   });
@@ -57,7 +57,7 @@ describe('followings async actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${host}:${port}/followings/handle-favorite`,
+      `${host}/followings/handle-favorite`,
       {"data": undefined, "headers": "jest test", "method": "PATCH"}
     );
   });
@@ -80,7 +80,7 @@ describe('followings async actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${host}:${port}/followings/unfollow`,
+      `${host}/followings/unfollow`,
       {"data": undefined, "headers": "jest test", "method": "PATCH"}
     );
   });

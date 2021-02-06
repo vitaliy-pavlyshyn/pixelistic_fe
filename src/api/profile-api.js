@@ -1,10 +1,10 @@
 import httpServise from './http-service';
-import { host, port } from '../const/node-server-config';
+import { host } from '../const/node-server-config';
 
 export const profileAPI = {
     getProfile: (nickname) => {
         return new Promise((resolve, reject) => {
-            httpServise.get(`${host}:${port}/profile/get-profile/${nickname}`).then(
+            httpServise.get(`${host}/profile/get-profile/${nickname}`).then(
                 res => {
                     if (res.data.payload) {
                         resolve(res.data.payload);
@@ -17,7 +17,7 @@ export const profileAPI = {
     updateProfile: (_id, fullName, nickname, website, bio, avatar) => {
         let updatedProfile = { fullName, nickname, website, bio, avatar };
         return new Promise((resolve, reject) => {
-            httpServise.post(`${host}:${port}/profile/${_id}`, updatedProfile).then(
+            httpServise.post(`${host}/profile/${_id}`, updatedProfile).then(
                 res => {
                     if (res.data.payload) {
                         resolve(res.data.payload);
@@ -30,7 +30,7 @@ export const profileAPI = {
     userChangePassword: (_id, oldPassword, newPassword, newPasswordConf) => {
         let userChangePassword = { oldPassword, newPassword, newPasswordConf };
         return new Promise((resolve, reject) => {
-            httpServise.post(`${host}:${port}/profile/change-password/${_id}`, userChangePassword).then(
+            httpServise.post(`${host}/profile/change-password/${_id}`, userChangePassword).then(
                 res => { resolve(res.data.payload) }, err => reject(err)
             )
         })

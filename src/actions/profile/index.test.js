@@ -1,6 +1,6 @@
 import mockStore from '../../__mocks__/redux-mock-store';
 import mockAxios from '../../__mocks__/axios';
-import { host, port } from '../../const/node-server-config';
+import { host } from '../../const/node-server-config';
 import * as actions from './index';
 const store = mockStore();
 
@@ -31,7 +31,7 @@ describe('profile async actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${host}:${port}/profile/get-profile/carbonid1`,
+      `${host}/profile/get-profile/carbonid1`,
       {"data": undefined, "headers": "jest test", "method": "GET"}
     );
   });
@@ -68,7 +68,7 @@ describe('profile async actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${host}:${port}/profile/1`,
+      `${host}/profile/1`,
       {"data": {
         bio: 'update_bio',
         website: 'update_website',
@@ -97,7 +97,7 @@ describe('profile async actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
     expect(mockAxios).toHaveBeenCalledTimes(1);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${host}:${port}/profile/change-password/1`,
+      `${host}/profile/change-password/1`,
       {"data": { 
         oldPassword: 'oldPassword', 
         newPassword: 'newPassword', 
