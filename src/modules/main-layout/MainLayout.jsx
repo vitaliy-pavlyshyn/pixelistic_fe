@@ -79,7 +79,7 @@ export class MainLayout extends Component {
     return <LoadingSpinner/>
   }
 
-  socket = io.connect(`${process.env.REACT_APP_API_SOCKET}:${process.env.REACT_APP_API_WEB_PORT }`);
+  socket = io.connect(`${process.env.REACT_APP_API_SOCKET}`);
 
   signOut =  async () => {
     this.setState({ accessToken: false });
