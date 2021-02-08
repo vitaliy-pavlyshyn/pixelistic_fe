@@ -32,8 +32,8 @@ pipeline {
         }
         stage('Apply changes to k8s cluster') {
             steps {
-                sh "kubectl delete -f ./k8s-manifests/fe.yaml"
-                sh "kubectl apply -f ./k8s-manifests/fe.yaml"
+                sh "kubectl delete -f fe.yaml"
+                sh "kubectl apply -f fe.yaml"
             }
         }        
     }
