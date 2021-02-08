@@ -30,12 +30,12 @@ pipeline {
                 sh "sudo docker tag pixelistic_fe:latest public.ecr.aws/t0q9r0m9/pixelistic_fe:latest && sudo docker push public.ecr.aws/t0q9r0m9/pixelistic_fe:latest"
             }
         }
-        stage('Apply changes to k8s cluster') {
-            steps {
-                sh "kubectl delete -f fe.yaml"
-                sh "kubectl apply -f fe.yaml"
-            }
-        }        
+        // stage('Apply changes to k8s cluster') {
+        //     steps {
+        //         sh "kubectl delete -f fe.yaml"
+        //         sh "kubectl apply -f fe.yaml"
+        //     }
+        // }        
     }
     post { 
         always { 
