@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pixelistic-fe
+spec:
+  selector:
+    matchLabels:
+      app: pixel-fe
+  template:
+    metadata:
+      labels:
+        app: pixel-fe
+    spec:
+      containers:
+      - name: pixel-fe
+        image: public.ecr.aws/t0q9r0m9/pixelistic_fe:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 80
